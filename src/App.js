@@ -2,24 +2,36 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './Login';
 import Register from './Register';
+import Checkout from './Checkout';
 
 const menuItems = [
-  { id: 1, name: 'Margherita Classic', desc: 'San Marzano tomatoes, fresh mozzarella, basil oil', price: 850, category: 'Classic', badge: 'Bestseller' },
-  { id: 2, name: 'BBQ Smoky Chicken', desc: 'Smoked chicken, caramelized onions, BBQ drizzle', price: 1100, category: 'Chicken', badge: 'Hot' },
-  { id: 3, name: 'Pepperoni Feast', desc: 'Double pepperoni, cheese burst crust, oregano', price: 1250, category: 'Beef', badge: 'Popular' },
-  { id: 4, name: 'Veggie Supreme', desc: 'Bell peppers, mushrooms, olives, sun-dried tomato', price: 950, category: 'Veggie', badge: '' },
-  { id: 5, name: 'Spicy Tikka', desc: 'Tikka chicken, green chilli, mint chutney base', price: 1150, category: 'Chicken', badge: 'Spicy 🌶' },
-  { id: 6, name: 'Cheese Overload', desc: 'Four cheese blend, truffle oil, crispy garlic', price: 1300, category: 'Classic', badge: 'New' },
-  { id: 7, name: 'Buffalo Ranch', desc: 'Buffalo sauce, ranch drizzle, crispy chicken strips', price: 1200, category: 'Chicken', badge: '' },
-  { id: 8, name: 'Beef Zinger', desc: 'Zinger beef, jalapeños, chipotle mayo, cheddar', price: 1350, category: 'Beef', badge: 'Hot' },
+  { id: 1, name: 'Margherita Classic', desc: 'San Marzano tomatoes, fresh mozzarella, basil oil', price: 850, category: 'Classic', badge: 'Bestseller',
+    img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80' },
+  { id: 2, name: 'BBQ Smoky Chicken', desc: 'Smoked chicken, caramelized onions, BBQ drizzle', price: 1100, category: 'Chicken', badge: 'Hot',
+    img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+  { id: 3, name: 'Pepperoni Feast', desc: 'Double pepperoni, cheese burst crust, oregano', price: 1250, category: 'Beef', badge: 'Popular',
+    img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80' },
+  { id: 4, name: 'Veggie Supreme', desc: 'Bell peppers, mushrooms, olives, sun-dried tomato', price: 950, category: 'Veggie', badge: '',
+    img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80' },
+  { id: 5, name: 'Spicy Tikka', desc: 'Tikka chicken, green chilli, mint chutney base', price: 1150, category: 'Chicken', badge: 'Spicy 🌶',
+    img: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=400&q=80' },
+  { id: 6, name: 'Cheese Overload', desc: 'Four cheese blend, truffle oil, crispy garlic', price: 1300, category: 'Classic', badge: 'New',
+    img: 'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&q=80' },
+  { id: 7, name: 'Buffalo Ranch', desc: 'Buffalo sauce, ranch drizzle, crispy chicken strips', price: 1200, category: 'Chicken', badge: '',
+    img: 'https://images.unsplash.com/photo-1548369937-47519962c11a?w=400&q=80' },
+  { id: 8, name: 'Beef Zinger', desc: 'Zinger beef, jalapeños, chipotle mayo, cheddar', price: 1350, category: 'Beef', badge: 'Hot',
+    img: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&q=80' },
 ];
 
 const categories = ['All', 'Classic', 'Chicken', 'Beef', 'Veggie'];
 
 const deals = [
-  { id: 1, title: 'Family Feast', desc: '2 Large Pizzas + 4 Drinks + Garlic Bread', price: 2999, original: 4200, tag: '28% OFF' },
-  { id: 2, title: 'Date Night', desc: '1 Large Pizza + 2 Drinks + Dessert', price: 1599, original: 2100, tag: '24% OFF' },
-  { id: 3, title: 'Solo Deal', desc: '1 Medium Pizza + 1 Drink + Fries', price: 899, original: 1300, tag: '30% OFF' },
+  { id: 1, title: 'Family Feast', desc: '2 Large Pizzas + 4 Drinks + Garlic Bread', price: 2999, original: 4200, tag: '28% OFF',
+    img: 'https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=400&q=80' },
+  { id: 2, title: 'Date Night', desc: '1 Large Pizza + 2 Drinks + Dessert', price: 1599, original: 2100, tag: '24% OFF',
+    img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80' },
+  { id: 3, title: 'Solo Deal', desc: '1 Medium Pizza + 1 Drink + Fries', price: 899, original: 1300, tag: '30% OFF',
+    img: 'https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=400&q=80' },
 ];
 
 export default function App() {
@@ -29,7 +41,8 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notification, setNotification] = useState('');
   const [activeSection, setActiveSection] = useState('home');
-  const [authPage, setAuthPage] = useState(null); // null | 'login' | 'register'
+  const [authPage, setAuthPage] = useState(null);
+  const [page, setPage] = useState('home'); // home | checkout
 
   const filtered = activeCategory === 'All' ? menuItems : menuItems.filter(i => i.category === activeCategory);
   const cartCount = cart.reduce((a, b) => a + b.qty, 0);
@@ -68,6 +81,11 @@ export default function App() {
     setMenuOpen(false);
   };
 
+  if (page === 'checkout') {
+    return <Checkout cart={cart} total={cartTotal} onBack={() => setPage('home')}
+      updateQty={updateQty} removeFromCart={removeFromCart} />;
+  }
+
   return (
     <div className="pv-app">
 
@@ -75,20 +93,14 @@ export default function App() {
       {authPage && (
         <div className="auth-page" style={{position:'fixed',inset:0,zIndex:3000}}>
           {authPage === 'login'
-            ? <Login onSwitch={() => setAuthPage('register')} />
-            : <Register onSwitch={() => setAuthPage('login')} />
+            ? <Login onSwitch={() => setAuthPage('register')} onClose={() => setAuthPage(null)} />
+            : <Register onSwitch={() => setAuthPage('login')} onClose={() => setAuthPage(null)} />
           }
-          <button onClick={() => setAuthPage(null)}
-            style={{position:'absolute',top:20,left:20,background:'rgba(255,255,255,0.1)',
-            border:'none',color:'#fff',padding:'8px 16px',borderRadius:'20px',
-            cursor:'pointer',fontSize:'14px',fontFamily:'Poppins,sans-serif'}}>
-            ← Back
-          </button>
         </div>
       )}
 
       {/* NOTIFICATION TOAST */}
-      {notification && <div className="pv-toast">{notification}</div>}
+      {notification && <div className="pv-toast">✅ {notification}</div>}
 
       {/* NAVBAR */}
       <nav className="pv-nav">
@@ -97,7 +109,6 @@ export default function App() {
             <span className="pv-logo-icon">🍕</span>
             <span className="pv-logo-text">Pizza <span>Valley</span></span>
           </div>
-
           <ul className={`pv-nav-links ${menuOpen ? 'open' : ''}`}>
             {['home', 'menu', 'deals', 'contact'].map(s => (
               <li key={s}>
@@ -107,10 +118,9 @@ export default function App() {
               </li>
             ))}
           </ul>
-
           <div className="pv-nav-actions">
             <button className="pv-cart-btn" onClick={() => setCartOpen(true)}>
-              🛒 <span className="pv-cart-count">{cartCount}</span>
+              🛒 {cartCount > 0 && <span className="pv-cart-count">{cartCount}</span>}
             </button>
             <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
             <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
@@ -125,10 +135,7 @@ export default function App() {
       <section className="pv-hero" id="home">
         <div className="pv-hero-content">
           <div className="pv-hero-badge">🔥 Fresh & Hot — Delivered in 30 mins</div>
-          <h1>
-            Authentic Pizza<br />
-            <span>Crafted with Passion</span>
-          </h1>
+          <h1>Authentic Pizza<br /><span>Crafted with Passion</span></h1>
           <p>Stone-fired pizzas made from scratch, delivered hot to your door anywhere in Rawalpindi & Islamabad.</p>
           <div className="pv-hero-btns">
             <button className="pv-btn-primary" onClick={() => scrollTo('menu')}>Explore Menu 🍕</button>
@@ -144,10 +151,11 @@ export default function App() {
         </div>
         <div className="pv-hero-visual">
           <div className="pv-pizza-ring">
-            <div className="pv-pizza-emoji">🍕</div>
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=90"
+              alt="Pizza" className="pv-hero-pizza-img" />
           </div>
-          <div className="pv-floating-card pv-fc1">⚡ Just ordered!</div>
-          <div className="pv-floating-card pv-fc2">🌟 Top Rated</div>
+          <div className="pv-floating-card pv-fc1">⚡ Just ordered in Rawalpindi!</div>
+          <div className="pv-floating-card pv-fc2">🌟 4.9 Rating — Top Rated</div>
         </div>
       </section>
 
@@ -157,7 +165,7 @@ export default function App() {
           {[
             { icon: '🔥', title: 'Stone Fired', desc: 'Cooked in our signature stone oven at 450°C' },
             { icon: '🌿', title: 'Fresh Daily', desc: 'All ingredients sourced fresh every morning' },
-            { icon: '⚡', title: '30 Min Delivery', desc: 'Guaranteed hot delivery or your next order is free' },
+            { icon: '⚡', title: '30 Min Delivery', desc: 'Guaranteed hot delivery or your next is free' },
             { icon: '💳', title: 'Easy Payment', desc: 'Cash, JazzCash, Easypaisa, Card — your choice' },
           ].map((f, i) => (
             <div className="pv-why-card" key={i}>
@@ -178,16 +186,17 @@ export default function App() {
         </div>
         <div className="pv-categories">
           {categories.map(c => (
-            <button key={c} className={`pv-cat-btn ${activeCategory === c ? 'active' : ''}`} onClick={() => setActiveCategory(c)}>
-              {c}
-            </button>
+            <button key={c} className={`pv-cat-btn ${activeCategory === c ? 'active' : ''}`}
+              onClick={() => setActiveCategory(c)}>{c}</button>
           ))}
         </div>
         <div className="pv-menu-grid">
           {filtered.map(item => (
             <div className="pv-menu-card" key={item.id}>
               {item.badge && <div className="pv-menu-badge">{item.badge}</div>}
-              <div className="pv-menu-img">🍕</div>
+              <div className="pv-menu-img">
+                <img src={item.img} alt={item.name} />
+              </div>
               <div className="pv-menu-info">
                 <h3>{item.name}</h3>
                 <p>{item.desc}</p>
@@ -212,14 +221,19 @@ export default function App() {
           {deals.map(deal => (
             <div className="pv-deal-card" key={deal.id}>
               <div className="pv-deal-tag">{deal.tag}</div>
-              <div className="pv-deal-icon">🎉</div>
-              <h3>{deal.title}</h3>
-              <p>{deal.desc}</p>
-              <div className="pv-deal-price">
-                <span className="pv-deal-original">Rs. {deal.original.toLocaleString()}</span>
-                <span className="pv-deal-new">Rs. {deal.price.toLocaleString()}</span>
+              <div className="pv-deal-img">
+                <img src={deal.img} alt={deal.title} />
               </div>
-              <button className="pv-btn-primary" style={{width:'100%'}} onClick={() => scrollTo('menu')}>Order This Deal</button>
+              <div className="pv-deal-body">
+                <h3>{deal.title}</h3>
+                <p>{deal.desc}</p>
+                <div className="pv-deal-price">
+                  <span className="pv-deal-original">Rs. {deal.original.toLocaleString()}</span>
+                  <span className="pv-deal-new">Rs. {deal.price.toLocaleString()}</span>
+                </div>
+                <button className="pv-btn-primary" style={{width:'100%'}}
+                  onClick={() => scrollTo('menu')}>Order This Deal</button>
+              </div>
             </div>
           ))}
         </div>
@@ -242,10 +256,7 @@ export default function App() {
               <p>"{t.text}"</p>
               <div className="pv-test-author">
                 <div className="pv-test-avatar">{t.name[0]}</div>
-                <div>
-                  <strong>{t.name}</strong>
-                  <span>{t.loc}</span>
-                </div>
+                <div><strong>{t.name}</strong><span>{t.loc}</span></div>
               </div>
             </div>
           ))}
@@ -297,7 +308,7 @@ export default function App() {
           </div>
           <div className="pv-footer-links">
             <h4>Payment</h4>
-            <p>💵 Cash on Delivery</p><p>📱 JazzCash</p><p>📱 Easypaisa</p><p>💳 Credit / Debit Card</p>
+            <p>💵 Cash on Delivery</p><p>📱 JazzCash</p><p>📱 Easypaisa</p><p>💳 Card</p>
           </div>
         </div>
         <div className="pv-footer-bottom">
@@ -310,20 +321,23 @@ export default function App() {
         <div className="pv-cart-overlay" onClick={() => setCartOpen(false)}>
           <div className="pv-cart-sidebar" onClick={e => e.stopPropagation()}>
             <div className="pv-cart-header">
-              <h2>🛒 Your Cart</h2>
+              <h2>🛒 Your Cart ({cartCount})</h2>
               <button onClick={() => setCartOpen(false)}>✕</button>
             </div>
             {cart.length === 0 ? (
               <div className="pv-cart-empty">
-                <p>🍕</p>
+                <p style={{fontSize:'60px'}}>🍕</p>
                 <p>Your cart is empty</p>
-                <button className="pv-btn-primary" onClick={() => { setCartOpen(false); scrollTo('menu'); }}>Browse Menu</button>
+                <button className="pv-btn-primary" onClick={() => { setCartOpen(false); scrollTo('menu'); }}>
+                  Browse Menu
+                </button>
               </div>
             ) : (
               <>
                 <div className="pv-cart-items">
                   {cart.map(item => (
                     <div className="pv-cart-item" key={item.id}>
+                      <img src={item.img} alt={item.name} className="pv-cart-item-img" />
                       <div className="pv-cart-item-info">
                         <strong>{item.name}</strong>
                         <span>Rs. {item.price.toLocaleString()}</span>
@@ -342,7 +356,10 @@ export default function App() {
                     <span>Total</span>
                     <strong>Rs. {cartTotal.toLocaleString()}</strong>
                   </div>
-                  <button className="pv-btn-primary" style={{width:'100%', padding:'14px'}}>Proceed to Checkout</button>
+                  <button className="pv-btn-primary" style={{width:'100%', padding:'14px'}}
+                    onClick={() => { setCartOpen(false); setPage('checkout'); }}>
+                    Proceed to Checkout →
+                  </button>
                 </div>
               </>
             )}
