@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Login from './Login';
+import Register from './Register';
 
 const menuItems = [
   { id: 1, name: 'Margherita Classic', desc: 'San Marzano tomatoes, fresh mozzarella, basil oil', price: 850, category: 'Classic', badge: 'Bestseller' },
@@ -27,6 +29,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notification, setNotification] = useState('');
   const [activeSection, setActiveSection] = useState('home');
+  const [authPage, setAuthPage] = useState(null); // null | 'login' | 'register'
 
   const filtered = activeCategory === 'All' ? menuItems : menuItems.filter(i => i.category === activeCategory);
   const cartCount = cart.reduce((a, b) => a + b.qty, 0);
@@ -68,6 +71,22 @@ export default function App() {
   return (
     <div className="pv-app">
 
+      {/* AUTH OVERLAY */}
+      {authPage && (
+        <div className="auth-page" style={{position:'fixed',inset:0,zIndex:3000}}>
+          {authPage === 'login'
+            ? <Login onSwitch={() => setAuthPage('register')} />
+            : <Register onSwitch={() => setAuthPage('login')} />
+          }
+          <button onClick={() => setAuthPage(null)}
+            style={{position:'absolute',top:20,left:20,background:'rgba(255,255,255,0.1)',
+            border:'none',color:'#fff',padding:'8px 16px',borderRadius:'20px',
+            cursor:'pointer',fontSize:'14px',fontFamily:'Poppins,sans-serif'}}>
+            ← Back
+          </button>
+        </div>
+      )}
+
       {/* NOTIFICATION TOAST */}
       {notification && <div className="pv-toast">{notification}</div>}
 
@@ -93,7 +112,8 @@ export default function App() {
             <button className="pv-cart-btn" onClick={() => setCartOpen(true)}>
               🛒 <span className="pv-cart-count">{cartCount}</span>
             </button>
-            <button className="pv-order-btn" onClick={() => scrollTo('menu')}>Order Now</button>
+            <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
+            <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
             <button className="pv-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -156,7 +176,6 @@ export default function App() {
           <h2>Hand-Crafted Pizzas</h2>
           <p>Every pizza made fresh to order with premium ingredients</p>
         </div>
-
         <div className="pv-categories">
           {categories.map(c => (
             <button key={c} className={`pv-cat-btn ${activeCategory === c ? 'active' : ''}`} onClick={() => setActiveCategory(c)}>
@@ -164,7 +183,6 @@ export default function App() {
             </button>
           ))}
         </div>
-
         <div className="pv-menu-grid">
           {filtered.map(item => (
             <div className="pv-menu-card" key={item.id}>
