@@ -6,19 +6,19 @@ import Checkout from './Checkout';
 
 const menuItems = [
   { id: 1, name: 'Margherita Classic', desc: 'San Marzano tomatoes, fresh mozzarella, basil oil', price: 850, category: 'Classic', badge: 'Bestseller',
-    img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&q=80' },
+    img: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=400&q=80' },
   { id: 2, name: 'BBQ Smoky Chicken', desc: 'Smoked chicken, caramelized onions, BBQ drizzle', price: 1100, category: 'Chicken', badge: 'Hot',
-    img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80' },
+    img: 'https://images.unsplash.com/photo-1590947132387-155cc02f3212?w=400&q=80' },
   { id: 3, name: 'Pepperoni Feast', desc: 'Double pepperoni, cheese burst crust, oregano', price: 1250, category: 'Beef', badge: 'Popular',
     img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&q=80' },
   { id: 4, name: 'Veggie Supreme', desc: 'Bell peppers, mushrooms, olives, sun-dried tomato', price: 950, category: 'Veggie', badge: '',
-    img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&q=80' },
+    img: 'https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=400&q=80' },
   { id: 5, name: 'Spicy Tikka', desc: 'Tikka chicken, green chilli, mint chutney base', price: 1150, category: 'Chicken', badge: 'Spicy 🌶',
-    img: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=400&q=80' },
+    img: 'https://images.unsplash.com/photo-1593504049359-74330189a1a1?w=400&q=80' },
   { id: 6, name: 'Cheese Overload', desc: 'Four cheese blend, truffle oil, crispy garlic', price: 1300, category: 'Classic', badge: 'New',
-    img: 'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&q=80' },
-  { id: 7, name: 'Buffalo Ranch', desc: 'Buffalo sauce, ranch drizzle, crispy chicken strips', price: 1200, category: 'Chicken', badge: '',
     img: 'https://images.unsplash.com/photo-1548369937-47519962c11a?w=400&q=80' },
+  { id: 7, name: 'Buffalo Ranch', desc: 'Buffalo sauce, ranch drizzle, crispy chicken strips', price: 1200, category: 'Chicken', badge: '',
+    img: 'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=400&q=80' },
   { id: 8, name: 'Beef Zinger', desc: 'Zinger beef, jalapeños, chipotle mayo, cheddar', price: 1350, category: 'Beef', badge: 'Hot',
     img: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=400&q=80' },
 ];
@@ -42,7 +42,7 @@ export default function App() {
   const [notification, setNotification] = useState('');
   const [activeSection, setActiveSection] = useState('home');
   const [authPage, setAuthPage] = useState(null);
-  const [page, setPage] = useState('home'); // home | checkout
+  const [page, setPage] = useState('home');
 
   const filtered = activeCategory === 'All' ? menuItems : menuItems.filter(i => i.category === activeCategory);
   const cartCount = cart.reduce((a, b) => a + b.qty, 0);
