@@ -5,7 +5,6 @@ import Register from './Register';
 import Checkout from './Checkout';
 import AdminDashboard from './AdminDashboard';
 import OrderTracking from './OrderTracking';
-import './developer-credit.css';
 
 const menuItems = [
   { id:1, category:'Classic', badge:'Bestseller', name:'Margherita Classic',
@@ -82,6 +81,7 @@ export default function App() {
   };
 
   useEffect(() => {
+    // ── SCROLL TRACKING ──
     const onScroll = () => {
       ['home','menu','deals','contact'].forEach(s => {
         const el = document.getElementById(s);
@@ -89,7 +89,24 @@ export default function App() {
       });
     };
     window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
+
+    // ── SECRET ADMIN SHORTCUT: Ctrl + Shift + A ──
+    const onKey = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        const pass = prompt('🔐 Admin Password:');
+        if (pass === 'softdigicodix2024') {
+          setIsAdmin(true);
+        } else if (pass !== null) {
+          alert('❌ Wrong password!');
+        }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', onKey);
+    };
   }, []);
 
   const scrollTo = (id) => {
@@ -97,10 +114,13 @@ export default function App() {
     setMenuOpen(false);
   };
 
+  // ── ADMIN PAGE ──
   if (isAdmin) return <AdminDashboard onLogout={() => setIsAdmin(false)} />;
 
+  // ── ORDER TRACKING PAGE ──
   if (showTracking) return <OrderTracking orderId="PV10234" onBack={() => setShowTracking(false)} />;
 
+  // ── CHECKOUT PAGE ──
   if (page === 'checkout') {
     return (
       <Checkout
@@ -118,6 +138,7 @@ export default function App() {
     );
   }
 
+  // ── MAIN PAGE ──
   return (
     <div className="pv-app">
 
@@ -148,6 +169,7 @@ export default function App() {
               alt="logo" className="pv-logo-img" />
             Pizza <span>Valley</span>
           </div>
+
           <ul className={`pv-nav-links ${menuOpen ? 'open' : ''}`}>
             {['home','menu','deals','contact'].map(s => (
               <li key={s}>
@@ -157,18 +179,13 @@ export default function App() {
               </li>
             ))}
           </ul>
+
           <div className="pv-nav-actions">
             <button className="pv-cart-btn" onClick={() => setCartOpen(true)}>
               🛒 {cartCount > 0 && <span className="pv-cart-count">{cartCount}</span>}
             </button>
             <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
             <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
-            <button onClick={() => setIsAdmin(true)}
-              style={{background:'#333',border:'none',color:'#ff6b35',
-              padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
-              fontSize:'12px',fontFamily:'Poppins,sans-serif'}}>
-              Admin
-            </button>
             <button className="pv-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -429,6 +446,7 @@ export default function App() {
           </div>
         </div>
       )}
+
     </div>
   );
 }
