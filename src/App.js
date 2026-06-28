@@ -1,96 +1,54 @@
+
+cat > /mnt/user-data/outputs/App.js << 'APPEOF'
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './Login';
 import Register from './Register';
 import Checkout from './Checkout';
+import AdminDashboard from './AdminDashboard';
+import OrderTracking from './OrderTracking';
 
-// ── REAL PIZZA IMAGES (each pizza has its own unique photo) ──
 const menuItems = [
-  {
-    id: 1, category: 'Classic', badge: 'Bestseller',
-    name: 'Margherita Classic',
-    desc: 'San Marzano tomatoes, fresh mozzarella, fresh basil, olive oil',
-    price: 850,
-    img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=85'
-  },
-  {
-    id: 2, category: 'Chicken', badge: 'Hot',
-    name: 'BBQ Smoky Chicken',
-    desc: 'Smoked chicken chunks, caramelized onions, smoky BBQ sauce drizzle',
-    price: 1100,
-    img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=85'
-  },
-  {
-    id: 3, category: 'Beef', badge: 'Popular',
-    name: 'Pepperoni Feast',
-    desc: 'Double layer pepperoni, cheese burst crust, dried oregano',
-    price: 1250,
-    img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=85'
-  },
-  {
-    id: 4, category: 'Veggie', badge: '',
-    name: 'Veggie Supreme',
-    desc: 'Roasted bell peppers, mushrooms, black olives, sun-dried tomato',
-    price: 950,
-    img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=85'
-  },
-  {
-    id: 5, category: 'Chicken', badge: 'Spicy 🌶',
-    name: 'Spicy Tikka',
-    desc: 'Tikka marinated chicken, green chilli, mint chutney base, red onion',
-    price: 1150,
-    img: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500&q=85'
-  },
-  {
-    id: 6, category: 'Classic', badge: 'New',
-    name: 'Cheese Overload',
-    desc: 'Four cheese blend — mozzarella, cheddar, gouda, parmesan with truffle oil',
-    price: 1300,
-    img: 'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&q=85'
-  },
-  {
-    id: 7, category: 'Chicken', badge: '',
-    name: 'Buffalo Ranch',
-    desc: 'Crispy buffalo chicken strips, ranch drizzle, pickled jalapeños',
-    price: 1200,
-    img: 'https://images.unsplash.com/photo-1548369937-47519962c11a?w=500&q=85'
-  },
-  {
-    id: 8, category: 'Beef', badge: 'Hot',
-    name: 'Beef Zinger',
-    desc: 'Zinger beef chunks, jalapeños, chipotle mayo, sharp cheddar',
-    price: 1350,
-    img: 'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=500&q=85'
-  },
+  { id:1, category:'Classic', badge:'Bestseller', name:'Margherita Classic',
+    desc:'San Marzano tomatoes, fresh mozzarella, fresh basil, olive oil', price:850,
+    img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=85' },
+  { id:2, category:'Chicken', badge:'Hot', name:'BBQ Smoky Chicken',
+    desc:'Smoked chicken chunks, caramelized onions, smoky BBQ sauce drizzle', price:1100,
+    img:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=85' },
+  { id:3, category:'Beef', badge:'Popular', name:'Pepperoni Feast',
+    desc:'Double layer pepperoni, cheese burst crust, dried oregano', price:1250,
+    img:'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=85' },
+  { id:4, category:'Veggie', badge:'', name:'Veggie Supreme',
+    desc:'Roasted bell peppers, mushrooms, black olives, sun-dried tomato', price:950,
+    img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500&q=85' },
+  { id:5, category:'Chicken', badge:'Spicy 🌶', name:'Spicy Tikka',
+    desc:'Tikka marinated chicken, green chilli, mint chutney base, red onion', price:1150,
+    img:'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=500&q=85' },
+  { id:6, category:'Classic', badge:'New', name:'Cheese Overload',
+    desc:'Four cheese blend — mozzarella, cheddar, gouda, parmesan with truffle oil', price:1300,
+    img:'https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?w=500&q=85' },
+  { id:7, category:'Chicken', badge:'', name:'Buffalo Ranch',
+    desc:'Crispy buffalo chicken strips, ranch drizzle, pickled jalapeños', price:1200,
+    img:'https://images.unsplash.com/photo-1548369937-47519962c11a?w=500&q=85' },
+  { id:8, category:'Beef', badge:'Hot', name:'Beef Zinger',
+    desc:'Zinger beef chunks, jalapeños, chipotle mayo, sharp cheddar', price:1350,
+    img:'https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=500&q=85' },
 ];
 
 const categories = ['All', 'Classic', 'Chicken', 'Beef', 'Veggie'];
 
 const deals = [
-  {
-    id: 1, tag: '28% OFF',
-    title: 'Family Feast',
-    desc: '2 Large Pizzas + 4 Drinks + Garlic Bread',
-    price: 2999, original: 4200,
-    img: 'https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=500&q=85'
-  },
-  {
-    id: 2, tag: '24% OFF',
-    title: 'Date Night',
-    desc: '1 Large Pizza + 2 Drinks + Chocolate Lava Cake',
-    price: 1599, original: 2100,
-    img: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=85'
-  },
-  {
-    id: 3, tag: '30% OFF',
-    title: 'Solo Deal',
-    desc: '1 Medium Pizza + 1 Drink + Crispy Fries',
-    price: 899, original: 1300,
-    img: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=85'
-  },
+  { id:1, tag:'28% OFF', title:'Family Feast',
+    desc:'2 Large Pizzas + 4 Drinks + Garlic Bread', price:2999, original:4200,
+    img:'https://images.unsplash.com/photo-1555072956-7758afb20e8f?w=500&q=85' },
+  { id:2, tag:'24% OFF', title:'Date Night',
+    desc:'1 Large Pizza + 2 Drinks + Chocolate Lava Cake', price:1599, original:2100,
+    img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&q=85' },
+  { id:3, tag:'30% OFF', title:'Solo Deal',
+    desc:'1 Medium Pizza + 1 Drink + Crispy Fries', price:899, original:1300,
+    img:'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=500&q=85' },
 ];
 
-// ── APP ──
 export default function App() {
   const [activeCategory, setActiveCategory] = useState('All');
   const [cart, setCart]           = useState([]);
@@ -98,12 +56,15 @@ export default function App() {
   const [menuOpen, setMenuOpen]   = useState(false);
   const [toast, setToast]         = useState('');
   const [activeSection, setActiveSection] = useState('home');
-  const [authPage, setAuthPage]   = useState(null); // null | 'login' | 'register'
-  const [page, setPage]           = useState('home'); // home | checkout
+  const [authPage, setAuthPage]   = useState(null);
+  const [page, setPage]           = useState('home');
+  const [isAdmin, setIsAdmin]     = useState(false);
+  const [showTracking, setShowTracking] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState('');
 
-  const filtered   = activeCategory === 'All' ? menuItems : menuItems.filter(i => i.category === activeCategory);
-  const cartCount  = cart.reduce((a, b) => a + b.qty, 0);
-  const cartTotal  = cart.reduce((a, b) => a + b.price * b.qty, 0);
+  const filtered  = activeCategory === 'All' ? menuItems : menuItems.filter(i => i.category === activeCategory);
+  const cartCount = cart.reduce((a, b) => a + b.qty, 0);
+  const cartTotal = cart.reduce((a, b) => a + b.price * b.qty, 0);
 
   const addToCart = (item) => {
     setCart(prev => {
@@ -137,14 +98,36 @@ export default function App() {
     setMenuOpen(false);
   };
 
+  // ── ADMIN PAGE ──
+  if (isAdmin) {
+    return <AdminDashboard onLogout={() => setIsAdmin(false)} />;
+  }
+
+  // ── ORDER TRACKING PAGE ──
+  if (showTracking) {
+    return (
+      <OrderTracking
+        orderId={currentOrderId}
+        onBack={() => setShowTracking(false)}
+      />
+    );
+  }
+
   // ── CHECKOUT PAGE ──
   if (page === 'checkout') {
     return (
       <Checkout
-        cart={cart} total={cartTotal}
+        cart={cart}
+        total={cartTotal}
         onBack={() => setPage('home')}
         updateQty={updateQty}
         removeFromCart={removeFromCart}
+        onOrderPlaced={(id) => {
+          setPage('home');
+          setCart([]);
+          setCurrentOrderId(id);
+          setShowTracking(true);
+        }}
       />
     );
   }
@@ -160,7 +143,13 @@ export default function App() {
             ? <Login onSwitch={() => setAuthPage('register')} onClose={() => setAuthPage(null)} />
             : <Register onSwitch={() => setAuthPage('login')} onClose={() => setAuthPage(null)} />
           }
-          <button className="auth-close-btn" onClick={() => setAuthPage(null)}>← Back</button>
+          <button
+            onClick={() => setAuthPage(null)}
+            style={{position:'absolute',top:20,left:20,background:'rgba(255,255,255,0.1)',
+            border:'none',color:'#fff',padding:'8px 16px',borderRadius:'20px',
+            cursor:'pointer',fontSize:'14px',fontFamily:'Poppins,sans-serif'}}>
+            ← Back
+          </button>
         </div>
       )}
 
@@ -195,9 +184,16 @@ export default function App() {
             <button className="pv-cart-btn" onClick={() => setCartOpen(true)}>
               🛒 {cartCount > 0 && <span className="pv-cart-count">{cartCount}</span>}
             </button>
-            <button className="pv-btn-login"  onClick={() => setAuthPage('login')}>Login</button>
-            <button className="pv-order-btn"  onClick={() => setAuthPage('register')}>Register</button>
-            <button className="pv-hamburger"  onClick={() => setMenuOpen(!menuOpen)}>
+            <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
+            <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
+            <button
+              onClick={() => setIsAdmin(true)}
+              style={{background:'#333',border:'none',color:'#ff6b35',
+              padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
+              fontSize:'12px',fontFamily:'Poppins,sans-serif'}}>
+              Admin
+            </button>
+            <button className="pv-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? '✕' : '☰'}
             </button>
           </div>
@@ -222,7 +218,6 @@ export default function App() {
             <div className="pv-stat"><strong>30 min</strong><span>Avg Delivery</span></div>
           </div>
         </div>
-
         <div className="pv-hero-visual">
           <div className="pv-pizza-ring">
             <img
@@ -239,10 +234,10 @@ export default function App() {
       <section className="pv-why">
         <div className="pv-why-grid">
           {[
-            { icon:'🔥', title:'Stone Fired',      desc:'Cooked in our signature stone oven at 450°C' },
-            { icon:'🌿', title:'Fresh Daily',       desc:'All ingredients sourced fresh every morning' },
-            { icon:'⚡', title:'30 Min Delivery',   desc:'Guaranteed hot delivery or your next is free' },
-            { icon:'💳', title:'Easy Payment',      desc:'Cash, JazzCash, Easypaisa, Card — your choice' },
+            { icon:'🔥', title:'Stone Fired',    desc:'Cooked in our signature stone oven at 450°C' },
+            { icon:'🌿', title:'Fresh Daily',     desc:'All ingredients sourced fresh every morning' },
+            { icon:'⚡', title:'30 Min Delivery', desc:'Guaranteed hot delivery or your next is free' },
+            { icon:'💳', title:'Easy Payment',    desc:'Cash, JazzCash, Easypaisa, Card — your choice' },
           ].map((f, i) => (
             <div className="pv-why-card" key={i}>
               <div className="pv-why-icon">{f.icon}</div>
@@ -260,17 +255,13 @@ export default function App() {
           <h2>Hand-Crafted Pizzas</h2>
           <p>Every pizza made fresh to order with premium ingredients</p>
         </div>
-
         <div className="pv-categories">
           {categories.map(c => (
-            <button
-              key={c}
+            <button key={c}
               className={`pv-cat-btn ${activeCategory === c ? 'active' : ''}`}
-              onClick={() => setActiveCategory(c)}
-            >{c}</button>
+              onClick={() => setActiveCategory(c)}>{c}</button>
           ))}
         </div>
-
         <div className="pv-menu-grid">
           {filtered.map(item => (
             <div className="pv-menu-card" key={item.id}>
@@ -352,10 +343,10 @@ export default function App() {
         </div>
         <div className="pv-contact-grid">
           {[
-            { icon:'📞', title:'Call Us',   info:'0300-1234567',        sub:'Daily 11am – 11pm' },
-            { icon:'📍', title:'Location',  info:'Rawalpindi, Pakistan', sub:'Saddar & Bahria Town' },
-            { icon:'📧', title:'Email',     info:'info@pizzavalley.pk',  sub:'Reply within 2 hours' },
-            { icon:'🕐', title:'Hours',     info:'11:00 AM – 11:00 PM', sub:'Open 7 days a week' },
+            { icon:'📞', title:'Call Us',  info:'0300-1234567',        sub:'Daily 11am – 11pm' },
+            { icon:'📍', title:'Location', info:'Rawalpindi, Pakistan', sub:'Saddar & Bahria Town' },
+            { icon:'📧', title:'Email',    info:'info@pizzavalley.pk',  sub:'Reply within 2 hours' },
+            { icon:'🕐', title:'Hours',    info:'11:00 AM – 11:00 PM', sub:'Open 7 days a week' },
           ].map((c, i) => (
             <div className="pv-contact-card" key={i}>
               <div className="pv-contact-icon">{c.icon}</div>
@@ -405,12 +396,12 @@ export default function App() {
               <h2>🛒 Your Cart ({cartCount})</h2>
               <button onClick={() => setCartOpen(false)}>✕</button>
             </div>
-
             {cart.length === 0 ? (
               <div className="pv-cart-empty">
                 <img
                   src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&q=80"
-                  alt="empty" style={{width:100,height:100,borderRadius:'50%',objectFit:'cover',opacity:0.4,marginBottom:12}}
+                  alt="empty"
+                  style={{width:100,height:100,borderRadius:'50%',objectFit:'cover',opacity:0.4,marginBottom:12}}
                 />
                 <p>Your cart is empty</p>
                 <button className="pv-btn-primary"
@@ -442,11 +433,9 @@ export default function App() {
                     <span>Total</span>
                     <strong>Rs. {cartTotal.toLocaleString()}</strong>
                   </div>
-                  <button
-                    className="pv-btn-primary"
+                  <button className="pv-btn-primary"
                     style={{width:'100%',padding:'14px'}}
-                    onClick={() => { setCartOpen(false); setPage('checkout'); }}
-                  >
+                    onClick={() => { setCartOpen(false); setPage('checkout'); }}>
                     Proceed to Checkout →
                   </button>
                 </div>
@@ -459,3 +448,4 @@ export default function App() {
     </div>
   );
 }
+

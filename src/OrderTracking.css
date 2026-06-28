@@ -1,0 +1,270 @@
+.ot-page {
+  min-height: 100vh;
+  background: #0d0d0d;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+.ot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  background: #111;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.ot-back {
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+}
+.ot-back:hover { background: #ff6b35; }
+.ot-logo { font-size: 18px; font-weight: 700; color: #ff6b35; }
+
+/* BODY */
+.ot-body {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+/* ORDER ID */
+.ot-order-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 20px;
+}
+.ot-order-id strong {
+  color: #ff6b35;
+  font-size: 16px;
+}
+
+/* STATUS HERO */
+.ot-status-hero {
+  background: linear-gradient(135deg, rgba(255,107,53,0.15), rgba(255,107,53,0.05));
+  border: 1px solid rgba(255,107,53,0.2);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  margin-bottom: 28px;
+  transition: all 0.5s;
+}
+.ot-status-hero.delivered {
+  background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05));
+  border-color: rgba(16,185,129,0.2);
+}
+.ot-status-icon {
+  font-size: 56px;
+  margin-bottom: 14px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.ot-status-hero h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.ot-status-hero p {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 16px;
+}
+.ot-eta {
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  color: #ccc;
+  display: inline-block;
+}
+.ot-eta strong { color: #ff6b35; }
+
+/* STEPS */
+.ot-steps {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.ot-step-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+}
+.ot-step-row:last-child { border-bottom: none; }
+.ot-step-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #242424;
+  border: 2px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  transition: all 0.5s;
+}
+.ot-step-circle.done {
+  background: rgba(16,185,129,0.15);
+  border-color: #10b981;
+  color: #10b981;
+  font-size: 16px;
+  font-weight: 700;
+}
+.ot-step-circle.active {
+  background: rgba(255,107,53,0.15);
+  border-color: #ff6b35;
+  animation: glow 2s ease-in-out infinite;
+}
+@keyframes glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,107,53,0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(255,107,53,0); }
+}
+.ot-step-info { flex: 1; }
+.ot-step-info strong {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 2px;
+  transition: color 0.3s;
+}
+.ot-step-info strong.active { color: #fff; }
+.ot-step-info span { font-size: 12px; color: #555; }
+.ot-step-badge {
+  background: rgba(255,107,53,0.15);
+  color: #ff6b35;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* RIDER */
+.ot-rider {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.ot-rider-header { margin-bottom: 14px; }
+.ot-rider-header h3 { font-size: 15px; font-weight: 600; color: #fff; }
+.ot-rider-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ot-rider-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ff6b35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.ot-rider-info > div { flex: 1; }
+.ot-rider-info strong { display: block; font-size: 14px; color: #fff; }
+.ot-rider-info span   { font-size: 12px; color: #888; }
+.ot-call-btn {
+  background: rgba(16,185,129,0.15);
+  color: #10b981;
+  border: 1px solid rgba(16,185,129,0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.ot-call-btn:hover { background: #10b981; color: #fff; }
+
+/* SUMMARY */
+.ot-summary {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.ot-summary h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px; }
+.ot-summary-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #aaa;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.ot-summary-item:last-child { border-bottom: none; }
+.ot-summary-item.total { color: #fff; padding-top: 12px; }
+.ot-summary-item.total strong { color: #ff6b35; font-size: 16px; }
+
+/* ADDRESS */
+.ot-address {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.ot-address h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+.ot-address p  { font-size: 13px; color: #aaa; line-height: 1.6; }
+
+/* HELP */
+.ot-help {
+  background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 20px;
+}
+.ot-help h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 14px; }
+.ot-help-btns { display: flex; gap: 12px; }
+.ot-help-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+  display: block;
+}
+.ot-help-btn:hover { border-color: #ff6b35; color: #ff6b35; }
+
+@media (max-width: 480px) {
+  .ot-header { padding: 14px 16px; }
+  .ot-body   { padding: 20px 16px; }
+  .ot-help-btns { flex-direction: column; }
+}
