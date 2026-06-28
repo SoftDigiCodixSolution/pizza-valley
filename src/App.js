@@ -6,6 +6,28 @@ import Checkout from './Checkout';
 import AdminDashboard from './AdminDashboard';
 import OrderTracking from './OrderTracking';
 
+// ── 🔥 COMPANY BRANDING ──
+const BRAND = {
+  name: 'SoftDigiCodix Solution',
+  shortName: 'SDC',
+  founder: 'Ali Awan',
+  phone: '0321-2627755',
+  whatsapp: '03212627755',
+  email: 'awan23893@gmail.com',
+  address: 'Rawalpindi, Pakistan',
+  locations: 'Rawalpindi & Islamabad',
+  hours: '11:00 AM – 11:00 PM',
+  year: '2024',
+  tagline: 'Digital Solutions, Delivered Fresh',
+  social: {
+    facebook: 'https://facebook.com/softdigicodix',
+    instagram: 'https://instagram.com/softdigicodix',
+    twitter: 'https://twitter.com/softdigicodix',
+    whatsapp: 'https://wa.me/923212627755'
+  }
+};
+// ──────────────────────────────────────────────
+
 const menuItems = [
   { id:1, category:'Classic', badge:'Bestseller', name:'Margherita Classic',
     desc:'San Marzano tomatoes, fresh mozzarella, fresh basil, olive oil', price:850,
@@ -101,7 +123,7 @@ export default function App() {
     return <AdminDashboard onLogout={() => setIsAdmin(false)} />;
   }
 
-  // ── ORDER TRACKING PAGE (hardcoded orderId) ──
+  // ── ORDER TRACKING PAGE ──
   if (showTracking) {
     return (
       <OrderTracking
@@ -158,11 +180,15 @@ export default function App() {
       <nav className="pv-nav">
         <div className="pv-nav-inner">
           <div className="pv-logo" onClick={() => scrollTo('home')}>
-            <img
-              src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=40&h=40&q=80&fit=crop"
-              alt="logo" className="pv-logo-img"
-            />
-            Pizza <span>Valley</span>
+            {/* ── SVG LOGO ── */}
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{marginRight:'10px'}}>
+              <circle cx="20" cy="20" r="18" fill="#ff6b35" stroke="#fff" strokeWidth="2"/>
+              <text x="10" y="26" fontFamily="Arial" fontSize="18" fontWeight="bold" fill="#fff">SD</text>
+              <circle cx="20" cy="20" r="22" stroke="#ff6b35" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.5"/>
+            </svg>
+            <span style={{color:'#ff6b35'}}>Soft</span>
+            <span style={{color:'#fff'}}>Digi</span>
+            <span style={{color:'#ff6b35'}}>Codix</span>
           </div>
 
           <ul className={`pv-nav-links ${menuOpen ? 'open' : ''}`}>
@@ -201,11 +227,14 @@ export default function App() {
       {/* ── HERO ── */}
       <section className="pv-hero" id="home">
         <div className="pv-hero-content">
-          <div className="pv-hero-badge">🔥 Fresh & Hot — Delivered in 30 mins</div>
-          <h1>Authentic Pizza<br /><span>Crafted with Passion</span></h1>
-          <p>Stone-fired pizzas made from scratch, delivered hot to your door anywhere in Rawalpindi & Islamabad.</p>
+          <div className="pv-hero-badge">🍕 Fresh & Hot — Delivered in 30 mins</div>
+          <h1>Welcome to <br /><span style={{color:'#ff6b35'}}>{BRAND.name}</span></h1>
+          <p style={{fontSize:'18px',color:'#ccc'}}>
+            {BRAND.tagline} — Authentic stone-fired pizzas made from scratch, 
+            delivered hot to your door anywhere in {BRAND.locations}.
+          </p>
           <div className="pv-hero-btns">
-            <button className="pv-btn-primary"   onClick={() => scrollTo('menu')}>Explore Menu 🍕</button>
+            <button className="pv-btn-primary" onClick={() => scrollTo('menu')}>Explore Menu 🍕</button>
             <button className="pv-btn-secondary" onClick={() => scrollTo('deals')}>View Deals 🎉</button>
           </div>
           <div className="pv-hero-stats">
@@ -214,6 +243,15 @@ export default function App() {
             <div className="pv-stat"><strong>4.9★</strong><span>Average Rating</span></div>
             <div className="pv-stat-divider" />
             <div className="pv-stat"><strong>30 min</strong><span>Avg Delivery</span></div>
+          </div>
+          {/* ── DEVELOPER CREDIT ── */}
+          <div style={{marginTop:'20px',padding:'12px 20px',background:'rgba(255,107,53,0.15)',
+            borderRadius:'30px',border:'1px solid rgba(255,107,53,0.3)',display:'inline-block'}}>
+            <span style={{color:'#ccc',fontSize:'13px'}}>
+              Developed with ❤️ by <strong style={{color:'#ff6b35'}}>{BRAND.founder}</strong>
+              <span style={{color:'#666',margin:'0 8px'}}>|</span>
+              <span style={{color:'#888',fontSize:'12px'}}>{BRAND.email}</span>
+            </span>
           </div>
         </div>
         <div className="pv-hero-visual">
@@ -333,20 +371,32 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── CONTACT ── */}
+      {/* ── CONTACT (UPDATED WITH YOUR DETAILS) ── */}
       <section className="pv-contact" id="contact">
         <div className="pv-section-header">
           <span className="pv-eyebrow">Find Us</span>
           <h2>Get In Touch</h2>
+          <p style={{color:'#888',fontSize:'15px'}}>
+            Reach out to {BRAND.name} — We'd love to hear from you!
+          </p>
         </div>
         <div className="pv-contact-grid">
           {[
-            { icon:'📞', title:'Call Us',  info:'0300-1234567',        sub:'Daily 11am – 11pm' },
-            { icon:'📍', title:'Location', info:'Rawalpindi, Pakistan', sub:'Saddar & Bahria Town' },
-            { icon:'📧', title:'Email',    info:'info@pizzavalley.pk',  sub:'Reply within 2 hours' },
-            { icon:'🕐', title:'Hours',    info:'11:00 AM – 11:00 PM', sub:'Open 7 days a week' },
+            { icon:'📞', title:'Call Us',  info:BRAND.phone, sub:`Available ${BRAND.hours}` },
+            { icon:'💬', title:'WhatsApp', info:BRAND.whatsapp, sub:'Click to chat instantly!' },
+            { icon:'📍', title:'Location', info:BRAND.address, sub:BRAND.locations },
+            { icon:'📧', title:'Email',    info:BRAND.email, sub:'Reply within 2 hours' },
           ].map((c, i) => (
-            <div className="pv-contact-card" key={i}>
+            <div className="pv-contact-card" key={i} style={{cursor:'pointer'}}
+              onClick={() => {
+                if (c.title === 'WhatsApp') {
+                  window.open(BRAND.social.whatsapp, '_blank');
+                } else if (c.title === 'Call Us') {
+                  window.location.href = `tel:${BRAND.phone}`;
+                } else if (c.title === 'Email') {
+                  window.location.href = `mailto:${BRAND.email}`;
+                }
+              }}>
               <div className="pv-contact-icon">{c.icon}</div>
               <h3>{c.title}</h3>
               <strong>{c.info}</strong>
@@ -356,14 +406,24 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
+      {/* ── FOOTER (UPDATED WITH YOUR BRAND) ── */}
       <footer className="pv-footer">
         <div className="pv-footer-top">
           <div className="pv-footer-brand">
-            <div className="pv-logo" style={{marginBottom:12}}>🍕 Pizza <span>Valley</span></div>
-            <p>Authentic stone-fired pizzas delivered fresh to your door across Rawalpindi & Islamabad since 2024.</p>
+            <div className="pv-logo" style={{marginBottom:12}}>
+              <span style={{color:'#ff6b35'}}>Soft</span>
+              <span style={{color:'#fff'}}>Digi</span>
+              <span style={{color:'#ff6b35'}}>Codix</span>
+            </div>
+            <p style={{color:'#999',fontSize:'14px',maxWidth:'300px'}}>
+              {BRAND.tagline} — Authentic stone-fired pizzas delivered fresh 
+              to your door across {BRAND.address} since {BRAND.year}.
+            </p>
             <div className="pv-social">
-              <button>📘</button><button>📸</button><button>🐦</button>
+              <button onClick={() => window.open(BRAND.social.facebook, '_blank')}>📘</button>
+              <button onClick={() => window.open(BRAND.social.instagram, '_blank')}>📸</button>
+              <button onClick={() => window.open(BRAND.social.twitter, '_blank')}>🐦</button>
+              <button onClick={() => window.open(BRAND.social.whatsapp, '_blank')}>💬</button>
             </div>
           </div>
           <div className="pv-footer-links">
@@ -382,7 +442,13 @@ export default function App() {
           </div>
         </div>
         <div className="pv-footer-bottom">
-          <p>© 2024 Pizza Valley. All rights reserved. Made with ❤️ in Pakistan</p>
+          <p style={{fontSize:'13px',color:'#666'}}>
+            © {BRAND.year} {BRAND.name}. All rights reserved. 
+            Developed with ❤️ by <strong style={{color:'#ff6b35'}}>{BRAND.founder}</strong>
+          </p>
+          <p style={{fontSize:'12px',color:'#555',marginTop:'6px'}}>
+            📧 {BRAND.email} | 📞 {BRAND.phone} | 💬 {BRAND.whatsapp}
+          </p>
         </div>
       </footer>
 
