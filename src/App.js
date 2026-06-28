@@ -5,35 +5,7 @@ import Register from './Register';
 import Checkout from './Checkout';
 import AdminDashboard from './AdminDashboard';
 import OrderTracking from './OrderTracking';
-
-// ── 🔥 BRANDING CONFIGURATION ──
-const BRAND = {
-  // 🍕 RESTAURANT BRAND (Shown to customers)
-  name: 'Pizza Valley',
-  tagline: 'Authentic Pizza Crafted with Passion',
-  
-  // 🛠️ DEVELOPER CREDIT (Hidden in footer/credit)
-  developer: 'SoftDigiCodix Solution',
-  founder: 'Ali Awan',
-  
-  // 📞 CONTACT DETAILS (Restaurant)
-  phone: '0321-2627755',
-  whatsapp: '03212627755',
-  email: 'awan23893@gmail.com',
-  address: 'Rawalpindi, Pakistan',
-  locations: 'Rawalpindi & Islamabad',
-  hours: '11:00 AM – 11:00 PM',
-  year: '2024',
-  
-  // 🌐 SOCIAL MEDIA (Restaurant / Developer)
-  social: {
-    facebook: 'https://facebook.com/softdigicodix',
-    instagram: 'https://instagram.com/softdigicodix',
-    twitter: 'https://twitter.com/softdigicodix',
-    whatsapp: 'https://wa.me/923212627755'
-  }
-};
-// ──────────────────────────────────────────────
+import './developer-credit.css';
 
 const menuItems = [
   { id:1, category:'Classic', badge:'Bestseller', name:'Margherita Classic',
@@ -85,13 +57,9 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [authPage, setAuthPage]   = useState(null);
   const [page, setPage]           = useState('home');
-  
-  // ── 🔐 AUTH STATE ──
-  const [user, setUser]           = useState(null);
   const [isAdmin, setIsAdmin]     = useState(false);
-
   const [showTracking, setShowTracking] = useState(false);
-  const [, setCurrentOrderId] = useState('');
+  const [, setCurrentOrderId]     = useState('');
 
   const filtered  = activeCategory === 'All' ? menuItems : menuItems.filter(i => i.category === activeCategory);
   const cartCount = cart.reduce((a, b) => a + b.qty, 0);
@@ -129,45 +97,14 @@ export default function App() {
     setMenuOpen(false);
   };
 
-  // ── LOGIN HANDLER ──
-  const handleLogin = (userData) => {
-    setUser(userData);
-    setAuthPage(null);
-    if (userData?.role === 'admin' || userData?.role === 'super_admin') {
-      setIsAdmin(true);
-    }
-  };
+  if (isAdmin) return <AdminDashboard onLogout={() => setIsAdmin(false)} />;
 
-  // ── LOGOUT HANDLER ──
-  const handleLogout = () => {
-    setUser(null);
-    setIsAdmin(false);
-    setCart([]);
-    setPage('home');
-    localStorage.removeItem('pv_current_user');
-  };
+  if (showTracking) return <OrderTracking orderId="PV10234" onBack={() => setShowTracking(false)} />;
 
-  // ── ADMIN PAGE (SECURED) ──
-  if (isAdmin && user && (user.role === 'admin' || user.role === 'super_admin')) {
-    return <AdminDashboard onLogout={handleLogout} />;
-  }
-
-  // ── ORDER TRACKING PAGE ──
-  if (showTracking) {
-    return (
-      <OrderTracking
-        orderId="PV10234"
-        onBack={() => setShowTracking(false)}
-      />
-    );
-  }
-
-  // ── CHECKOUT PAGE ──
   if (page === 'checkout') {
     return (
       <Checkout
-        cart={cart}
-        total={cartTotal}
+        cart={cart} total={cartTotal}
         onBack={() => setPage('home')}
         updateQty={updateQty}
         removeFromCart={removeFromCart}
@@ -181,7 +118,6 @@ export default function App() {
     );
   }
 
-  // ── MAIN PAGE ──
   return (
     <div className="pv-app">
 
@@ -189,11 +125,10 @@ export default function App() {
       {authPage && (
         <div className="auth-page" style={{position:'fixed',inset:0,zIndex:3000}}>
           {authPage === 'login'
-            ? <Login onSwitch={() => setAuthPage('register')} onClose={() => setAuthPage(null)} onLogin={handleLogin} />
+            ? <Login onSwitch={() => setAuthPage('register')} onClose={() => setAuthPage(null)} />
             : <Register onSwitch={() => setAuthPage('login')} onClose={() => setAuthPage(null)} />
           }
-          <button
-            onClick={() => setAuthPage(null)}
+          <button onClick={() => setAuthPage(null)}
             style={{position:'absolute',top:20,left:20,background:'rgba(255,255,255,0.1)',
             border:'none',color:'#fff',padding:'8px 16px',borderRadius:'20px',
             cursor:'pointer',fontSize:'14px',fontFamily:'Poppins,sans-serif'}}>
@@ -205,68 +140,35 @@ export default function App() {
       {/* TOAST */}
       {toast && <div className="pv-toast">{toast}</div>}
 
-      {/* ── NAVBAR ── */}
+      {/* NAVBAR */}
       <nav className="pv-nav">
         <div className="pv-nav-inner">
           <div className="pv-logo" onClick={() => scrollTo('home')}>
-            {/* ── PIZZA LOGO ── */}
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style={{marginRight:'10px'}}>
-              <circle cx="20" cy="20" r="18" fill="#ff6b35" stroke="#fff" strokeWidth="2"/>
-              <text x="7" y="26" fontFamily="Arial" fontSize="16" fontWeight="bold" fill="#fff">🍕</text>
-              <circle cx="20" cy="20" r="22" stroke="#ff6b35" strokeWidth="1.5" strokeDasharray="4 4" opacity="0.5"/>
-            </svg>
-            <span style={{color:'#fff'}}>Pizza</span>
-            <span style={{color:'#ff6b35'}}>Valley</span>
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=40&h=40&q=80&fit=crop"
+              alt="logo" className="pv-logo-img" />
+            Pizza <span>Valley</span>
           </div>
-
           <ul className={`pv-nav-links ${menuOpen ? 'open' : ''}`}>
             {['home','menu','deals','contact'].map(s => (
               <li key={s}>
-                <button
-                  className={activeSection === s ? 'active' : ''}
-                  onClick={() => scrollTo(s)}
-                >
+                <button className={activeSection === s ? 'active' : ''} onClick={() => scrollTo(s)}>
                   {s[0].toUpperCase() + s.slice(1)}
                 </button>
               </li>
             ))}
           </ul>
-
           <div className="pv-nav-actions">
             <button className="pv-cart-btn" onClick={() => setCartOpen(true)}>
               🛒 {cartCount > 0 && <span className="pv-cart-count">{cartCount}</span>}
             </button>
-
-            {/* ── AUTH BUTTONS ── */}
-            {user ? (
-              <>
-                <span style={{color:'#fff',fontSize:'13px',marginRight:'8px'}}>
-                  👋 {user.name}
-                </span>
-                {(user.role === 'admin' || user.role === 'super_admin') && (
-                  <button
-                    onClick={() => setIsAdmin(true)}
-                    style={{background:'#ff6b35',border:'none',color:'#fff',
-                    padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
-                    fontSize:'12px',fontFamily:'Poppins,sans-serif',fontWeight:'bold'}}>
-                    ⚙️ Admin
-                  </button>
-                )}
-                <button
-                  onClick={handleLogout}
-                  style={{background:'#dc3545',border:'none',color:'#fff',
-                  padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
-                  fontSize:'12px',fontFamily:'Poppins,sans-serif'}}>
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
-                <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
-              </>
-            )}
-
+            <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
+            <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
+            <button onClick={() => setIsAdmin(true)}
+              style={{background:'#333',border:'none',color:'#ff6b35',
+              padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
+              fontSize:'12px',fontFamily:'Poppins,sans-serif'}}>
+              Admin
+            </button>
             <button className="pv-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -274,15 +176,12 @@ export default function App() {
         </div>
       </nav>
 
-      {/* ── HERO (PIZZA BRAND SHOWN HERE) ── */}
+      {/* HERO */}
       <section className="pv-hero" id="home">
         <div className="pv-hero-content">
-          <div className="pv-hero-badge">🍕 Fresh & Hot — Delivered in 30 mins</div>
-          <h1>Welcome to <br /><span style={{color:'#ff6b35'}}>{BRAND.name}</span></h1>
-          <p style={{fontSize:'18px',color:'#ccc'}}>
-            {BRAND.tagline} — Stone-fired pizzas made from scratch, 
-            delivered hot to your door anywhere in {BRAND.locations}.
-          </p>
+          <div className="pv-hero-badge">🔥 Fresh & Hot — Delivered in 30 mins</div>
+          <h1>Authentic Pizza<br /><span>Crafted with Passion</span></h1>
+          <p>Stone-fired pizzas made from scratch, delivered hot to your door anywhere in Rawalpindi & Islamabad.</p>
           <div className="pv-hero-btns">
             <button className="pv-btn-primary" onClick={() => scrollTo('menu')}>Explore Menu 🍕</button>
             <button className="pv-btn-secondary" onClick={() => scrollTo('deals')}>View Deals 🎉</button>
@@ -294,29 +193,18 @@ export default function App() {
             <div className="pv-stat-divider" />
             <div className="pv-stat"><strong>30 min</strong><span>Avg Delivery</span></div>
           </div>
-          {/* ── DEVELOPER CREDIT (SoftDigiCodix + Ali Awan) ── */}
-          <div style={{marginTop:'20px',padding:'12px 20px',background:'rgba(255,107,53,0.15)',
-            borderRadius:'30px',border:'1px solid rgba(255,107,53,0.3)',display:'inline-block'}}>
-            <span style={{color:'#ccc',fontSize:'13px'}}>
-              Developed with ❤️ by <strong style={{color:'#ff6b35'}}>{BRAND.developer}</strong>
-              <span style={{color:'#666',margin:'0 8px'}}>|</span>
-              <span style={{color:'#888',fontSize:'12px'}}>Founder: {BRAND.founder}</span>
-            </span>
-          </div>
         </div>
         <div className="pv-hero-visual">
           <div className="pv-pizza-ring">
-            <img
-              src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=90"
-              alt="Fresh Pizza" className="pv-hero-pizza-img"
-            />
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&q=90"
+              alt="Fresh Pizza" className="pv-hero-pizza-img" />
           </div>
           <div className="pv-floating-card pv-fc1">⚡ Just ordered in Rawalpindi!</div>
           <div className="pv-floating-card pv-fc2">🌟 4.9 Rating — Top Rated</div>
         </div>
       </section>
 
-      {/* ── WHY US ── */}
+      {/* WHY US */}
       <section className="pv-why">
         <div className="pv-why-grid">
           {[
@@ -334,7 +222,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── MENU ── */}
+      {/* MENU */}
       <section className="pv-menu-section" id="menu">
         <div className="pv-section-header">
           <span className="pv-eyebrow">Our Menu</span>
@@ -343,8 +231,7 @@ export default function App() {
         </div>
         <div className="pv-categories">
           {categories.map(c => (
-            <button key={c}
-              className={`pv-cat-btn ${activeCategory === c ? 'active' : ''}`}
+            <button key={c} className={`pv-cat-btn ${activeCategory === c ? 'active' : ''}`}
               onClick={() => setActiveCategory(c)}>{c}</button>
           ))}
         </div>
@@ -368,7 +255,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── DEALS ── */}
+      {/* DEALS */}
       <section className="pv-deals" id="deals">
         <div className="pv-section-header">
           <span className="pv-eyebrow">Special Offers</span>
@@ -397,7 +284,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* TESTIMONIALS */}
       <section className="pv-testimonials">
         <div className="pv-section-header">
           <span className="pv-eyebrow">Reviews</span>
@@ -421,32 +308,20 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── CONTACT ── */}
+      {/* CONTACT */}
       <section className="pv-contact" id="contact">
         <div className="pv-section-header">
           <span className="pv-eyebrow">Find Us</span>
           <h2>Get In Touch</h2>
-          <p style={{color:'#888',fontSize:'15px'}}>
-            Reach out to {BRAND.name} — We'd love to hear from you!
-          </p>
         </div>
         <div className="pv-contact-grid">
           {[
-            { icon:'📞', title:'Call Us',  info:BRAND.phone, sub:`Available ${BRAND.hours}` },
-            { icon:'💬', title:'WhatsApp', info:BRAND.whatsapp, sub:'Click to chat instantly!' },
-            { icon:'📍', title:'Location', info:BRAND.address, sub:BRAND.locations },
-            { icon:'📧', title:'Email',    info:BRAND.email, sub:'Reply within 2 hours' },
+            { icon:'📞', title:'Call Us',  info:'0300-1234567',        sub:'Daily 11am – 11pm' },
+            { icon:'📍', title:'Location', info:'Rawalpindi, Pakistan', sub:'Saddar & Bahria Town' },
+            { icon:'📧', title:'Email',    info:'info@pizzavalley.pk',  sub:'Reply within 2 hours' },
+            { icon:'🕐', title:'Hours',    info:'11:00 AM – 11:00 PM', sub:'Open 7 days a week' },
           ].map((c, i) => (
-            <div className="pv-contact-card" key={i} style={{cursor:'pointer'}}
-              onClick={() => {
-                if (c.title === 'WhatsApp') {
-                  window.open(BRAND.social.whatsapp, '_blank');
-                } else if (c.title === 'Call Us') {
-                  window.location.href = `tel:${BRAND.phone}`;
-                } else if (c.title === 'Email') {
-                  window.location.href = `mailto:${BRAND.email}`;
-                }
-              }}>
+            <div className="pv-contact-card" key={i}>
               <div className="pv-contact-icon">{c.icon}</div>
               <h3>{c.title}</h3>
               <strong>{c.info}</strong>
@@ -456,23 +331,14 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── FOOTER (PIZZA BRAND + DEVELOPER CREDIT) ── */}
+      {/* FOOTER */}
       <footer className="pv-footer">
         <div className="pv-footer-top">
           <div className="pv-footer-brand">
-            <div className="pv-logo" style={{marginBottom:12}}>
-              🍕 <span style={{color:'#fff'}}>Pizza</span>
-              <span style={{color:'#ff6b35'}}>Valley</span>
-            </div>
-            <p style={{color:'#999',fontSize:'14px',maxWidth:'300px'}}>
-              {BRAND.tagline} — Stone-fired pizzas delivered fresh 
-              to your door across {BRAND.address} since {BRAND.year}.
-            </p>
+            <div className="pv-logo" style={{marginBottom:12}}>🍕 Pizza <span>Valley</span></div>
+            <p>Authentic stone-fired pizzas delivered fresh to your door across Rawalpindi & Islamabad since 2024.</p>
             <div className="pv-social">
-              <button onClick={() => window.open(BRAND.social.facebook, '_blank')}>📘</button>
-              <button onClick={() => window.open(BRAND.social.instagram, '_blank')}>📸</button>
-              <button onClick={() => window.open(BRAND.social.twitter, '_blank')}>🐦</button>
-              <button onClick={() => window.open(BRAND.social.whatsapp, '_blank')}>💬</button>
+              <button>📘</button><button>📸</button><button>🐦</button>
             </div>
           </div>
           <div className="pv-footer-links">
@@ -490,19 +356,30 @@ export default function App() {
             <p>💵 Cash on Delivery</p><p>📱 JazzCash</p><p>📱 Easypaisa</p><p>💳 Card</p>
           </div>
         </div>
+
+        {/* DEVELOPER CREDIT */}
+        <div className="pv-developer-credit">
+          <div className="pv-dev-left">
+            <span className="pv-dev-badge">💻 Developed by</span>
+            <strong>SoftDigiCodix_Solution®</strong>
+            <span className="pv-dev-slogan">Code Today, Solve Tomorrow</span>
+          </div>
+          <div className="pv-dev-right">
+            <a href="tel:03212627755">📞 03212627755</a>
+            <a href="mailto:awan23893@gmail.com">📧 awan23893@gmail.com</a>
+            <a href="https://wa.me/923212627755" target="_blank" rel="noreferrer">💬 WhatsApp</a>
+          </div>
+        </div>
+
         <div className="pv-footer-bottom">
-          <p style={{fontSize:'13px',color:'#666'}}>
-            © {BRAND.year} {BRAND.name}. All rights reserved. 
-            Developed by <strong style={{color:'#ff6b35'}}>{BRAND.developer}</strong> — 
-            Founder: <strong style={{color:'#ff6b35'}}>{BRAND.founder}</strong>
-          </p>
-          <p style={{fontSize:'12px',color:'#555',marginTop:'6px'}}>
-            📧 {BRAND.email} | 📞 {BRAND.phone} | 💬 {BRAND.whatsapp}
+          <p>© 2024 Pizza Valley. All rights reserved. Made with ❤️ in Pakistan</p>
+          <p style={{marginTop:4,fontSize:11,color:'#444'}}>
+            Designed & Developed by <strong style={{color:'#ff6b35'}}>SoftDigiCodix_Solution® — Ali Awan</strong>
           </p>
         </div>
       </footer>
 
-      {/* ── CART SIDEBAR ── */}
+      {/* CART SIDEBAR */}
       {cartOpen && (
         <div className="pv-cart-overlay" onClick={() => setCartOpen(false)}>
           <div className="pv-cart-sidebar" onClick={e => e.stopPropagation()}>
@@ -512,16 +389,11 @@ export default function App() {
             </div>
             {cart.length === 0 ? (
               <div className="pv-cart-empty">
-                <img
-                  src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&q=80"
-                  alt="empty"
-                  style={{width:100,height:100,borderRadius:'50%',objectFit:'cover',opacity:0.4,marginBottom:12}}
-                />
+                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=200&q=80"
+                  alt="empty" style={{width:100,height:100,borderRadius:'50%',objectFit:'cover',opacity:0.4,marginBottom:12}} />
                 <p>Your cart is empty</p>
                 <button className="pv-btn-primary"
-                  onClick={() => { setCartOpen(false); scrollTo('menu'); }}>
-                  Browse Menu
-                </button>
+                  onClick={() => { setCartOpen(false); scrollTo('menu'); }}>Browse Menu</button>
               </div>
             ) : (
               <>
@@ -547,8 +419,7 @@ export default function App() {
                     <span>Total</span>
                     <strong>Rs. {cartTotal.toLocaleString()}</strong>
                   </div>
-                  <button className="pv-btn-primary"
-                    style={{width:'100%',padding:'14px'}}
+                  <button className="pv-btn-primary" style={{width:'100%',padding:'14px'}}
                     onClick={() => { setCartOpen(false); setPage('checkout'); }}>
                     Proceed to Checkout →
                   </button>
@@ -558,7 +429,6 @@ export default function App() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
