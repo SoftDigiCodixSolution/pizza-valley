@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 
-export default function Login({ onSwitch, onClose }) {
+export default function Login({ onSwitch, onClose, onLogin }) {  // ← added onLogin prop
   const [form, setForm]       = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
@@ -39,13 +39,19 @@ export default function Login({ onSwitch, onClose }) {
       }
 
       // Save logged in user
-      localStorage.setItem('pv_current_user', JSON.stringify({
+      const userData = {
         id    : user.id,
         name  : user.name,
         email : user.email,
         phone : user.phone,
         role  : user.role,
-      }));
+      };
+      localStorage.setItem('pv_current_user', JSON.stringify(userData));
+
+      // ── 🔐 NEW: Notify the parent component (App) about the logged-in user ──
+      if (onLogin) {
+        onLogin(userData);
+      }
 
       setSuccess(`Welcome back, ${user.name}! 🎉`);
       setTimeout(() => {

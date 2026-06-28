@@ -78,7 +78,11 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [authPage, setAuthPage]   = useState(null);
   const [page, setPage]           = useState('home');
-  const [isAdmin, setIsAdmin]     = useState(false);
+  
+  // ── 🔐 AUTH STATE ──
+  const [user, setUser]           = useState(null); // Stores logged-in user data
+  const [isAdmin, setIsAdmin]     = useState(false); // Toggles admin view
+
   const [showTracking, setShowTracking] = useState(false);
   const [, setCurrentOrderId] = useState('');
 
@@ -118,9 +122,27 @@ export default function App() {
     setMenuOpen(false);
   };
 
-  // ── ADMIN PAGE ──
-  if (isAdmin) {
-    return <AdminDashboard onLogout={() => setIsAdmin(false)} />;
+  // ── LOGIN HANDLER ──
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setAuthPage(null);
+    // Check if user has admin role
+    if (userData?.role === 'admin' || userData?.role === 'super_admin') {
+      setIsAdmin(true);
+    }
+  };
+
+  // ── LOGOUT HANDLER ──
+  const handleLogout = () => {
+    setUser(null);
+    setIsAdmin(false);
+    setCart([]);
+    setPage('home');
+  };
+
+  // ── ADMIN PAGE (ONLY IF USER IS ADMIN) ──
+  if (isAdmin && user && (user.role === 'admin' || user.role === 'super_admin')) {
+    return <AdminDashboard onLogout={handleLogout} />;
   }
 
   // ── ORDER TRACKING PAGE ──
@@ -160,7 +182,7 @@ export default function App() {
       {authPage && (
         <div className="auth-page" style={{position:'fixed',inset:0,zIndex:3000}}>
           {authPage === 'login'
-            ? <Login onSwitch={() => setAuthPage('register')} onClose={() => setAuthPage(null)} />
+            ? <Login onSwitch={() => setAuthPage('register')} onClose={() => setAuthPage(null)} onLogin={handleLogin} />
             : <Register onSwitch={() => setAuthPage('login')} onClose={() => setAuthPage(null)} />
           }
           <button
@@ -208,15 +230,38 @@ export default function App() {
             <button className="pv-cart-btn" onClick={() => setCartOpen(true)}>
               🛒 {cartCount > 0 && <span className="pv-cart-count">{cartCount}</span>}
             </button>
-            <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
-            <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
-            <button
-              onClick={() => setIsAdmin(true)}
-              style={{background:'#333',border:'none',color:'#ff6b35',
-              padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
-              fontSize:'12px',fontFamily:'Poppins,sans-serif'}}>
-              Admin
-            </button>
+
+            {/* ── AUTH BUTTONS ── */}
+            {user ? (
+              <>
+                <span style={{color:'#fff',fontSize:'13px',marginRight:'8px'}}>
+                  👋 {user.name}
+                </span>
+                {/* ── ADMIN BUTTON (SHOWN ONLY IF USER IS ADMIN) ── */}
+                {(user.role === 'admin' || user.role === 'super_admin') && (
+                  <button
+                    onClick={() => setIsAdmin(true)}
+                    style={{background:'#ff6b35',border:'none',color:'#fff',
+                    padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
+                    fontSize:'12px',fontFamily:'Poppins,sans-serif',fontWeight:'bold'}}>
+                    ⚙️ Admin
+                  </button>
+                )}
+                <button
+                  onClick={handleLogout}
+                  style={{background:'#dc3545',border:'none',color:'#fff',
+                  padding:'8px 14px',borderRadius:'20px',cursor:'pointer',
+                  fontSize:'12px',fontFamily:'Poppins,sans-serif'}}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="pv-btn-login" onClick={() => setAuthPage('login')}>Login</button>
+                <button className="pv-order-btn" onClick={() => setAuthPage('register')}>Register</button>
+              </>
+            )}
+
             <button className="pv-hamburger" onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? '✕' : '☰'}
             </button>
@@ -371,7 +416,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── CONTACT (UPDATED WITH YOUR DETAILS) ── */}
+      {/* ── CONTACT ── */}
       <section className="pv-contact" id="contact">
         <div className="pv-section-header">
           <span className="pv-eyebrow">Find Us</span>
@@ -406,7 +451,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── FOOTER (UPDATED WITH YOUR BRAND) ── */}
+      {/* ── FOOTER ── */}
       <footer className="pv-footer">
         <div className="pv-footer-top">
           <div className="pv-footer-brand">
