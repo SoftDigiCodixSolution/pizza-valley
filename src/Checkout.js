@@ -7,7 +7,7 @@ export default function Checkout({ cart, total, onBack, updateQty, removeFromCar
   const [step, setStep] = useState(0);
   const [payMethod, setPayMethod] = useState('cod');
   const [form, setForm] = useState({ name:'', phone:'', address:'', city:'Rawalpindi', notes:'' });
-  const [ordered, setOrdered] = useState(false);
+  const [, setOrdered] = useState(false);
 
   const handle = e => setForm({ ...form, [e.target.name]: e.target.value });
   const delivery = 150;
