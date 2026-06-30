@@ -413,6 +413,12 @@ export default function App() {
             <h4>Payment</h4>
             <p>💵 Cash on Delivery</p><p>📱 JazzCash</p><p>📱 Easypaisa</p><p>💳 Card</p>
           </div>
+          <div className="pv-footer-links">
+            <h4>Staff Access</h4>
+            <button onClick={() => setIsAdmin(true)} style={{textAlign:'left'}}>
+              🔐 Staff / Admin Login
+            </button>
+          </div>
         </div>
 
         {/* DEVELOPER CREDIT */}
