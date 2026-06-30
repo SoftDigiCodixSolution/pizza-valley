@@ -9,11 +9,16 @@ const STEPS = [
   { id: 'delivered',   icon: '🎉', label: 'Delivered',         desc: 'Enjoy your pizza!' },
 ];
 
-export default function OrderTracking({ orderId, onBack }) {
+const RESTAURANT_LOCATION = { lat: 33.5969, lng: 73.0479 };
+
+export default function OrderTracking({ orderId, onBack, deliveryLocation }) {
   const [currentStep, setCurrentStep] = useState(0);
   const [eta, setEta]                 = useState(28);
   const [riderName]                   = useState('Muhammad Bilal');
   const [riderPhone]                  = useState('0311-1234567');
+  const [riderPos, setRiderPos]       = useState(RESTAURANT_LOCATION);
+
+  const customerLoc = deliveryLocation || { lat: 33.6007, lng: 73.0679 }; // fallback demo location
 
   // Simulate live order progression
   useEffect(() => {
@@ -28,8 +33,24 @@ export default function OrderTracking({ orderId, onBack }) {
     return () => clearInterval(interval);
   }, []);
 
+  // Simulate rider moving along the route once "on_the_way"
+  useEffect(() => {
+    if (currentStep !== 3) return; // only animate during "on_the_way"
+    let progress = 0;
+    const moveInterval = setInterval(() => {
+      progress += 0.05;
+      if (progress >= 1) { clearInterval(moveInterval); return; }
+      setRiderPos({
+        lat: RESTAURANT_LOCATION.lat + (customerLoc.lat - RESTAURANT_LOCATION.lat) * progress,
+        lng: RESTAURANT_LOCATION.lng + (customerLoc.lng - RESTAURANT_LOCATION.lng) * progress,
+      });
+    }, 800);
+    return () => clearInterval(moveInterval);
+  }, [currentStep, customerLoc.lat, customerLoc.lng]);
+
   const currentStatus = STEPS[currentStep];
   const isDelivered   = currentStep === STEPS.length - 1;
+  const showMap       = currentStep >= 2; // show map from "preparing" onward
 
   return (
     <div className="ot-page">
@@ -60,6 +81,29 @@ export default function OrderTracking({ orderId, onBack }) {
             </div>
           )}
         </div>
+
+        {/* LIVE MAP — shows from "preparing" step onward */}
+        {showMap && !isDelivered && (
+          <div className="ot-map-section">
+            <div className="ot-map-header">
+              <span>🗺️ Live Tracking</span>
+              {currentStep === 3 && <span className="ot-map-live-badge">● LIVE</span>}
+            </div>
+            <div className="ot-map-box">
+              <iframe
+                title="rider-map"
+                className="ot-map-iframe"
+                src={`https://maps.google.com/maps?q=${riderPos.lat},${riderPos.lng}&z=14&output=embed`}
+              />
+              {currentStep === 3 && (
+                <div className="ot-map-overlay">
+                  <div className="ot-rider-marker">🛵</div>
+                  <span>Rider is moving toward you</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* PROGRESS STEPS */}
         <div className="ot-steps">
