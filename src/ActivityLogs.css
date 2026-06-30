@@ -1,0 +1,77 @@
+cat > /mnt/user-data/outputs/ActivityLogs.css << 'EOF'
+.al-page { font-family: 'Poppins', sans-serif; }
+
+.al-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+.al-header h2 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.al-header span { font-size: 12px; color: #888; }
+.al-refresh {
+  background: rgba(255,107,53,0.15); color: #ff6b35;
+  border: 1px solid rgba(255,107,53,0.3); padding: 8px 16px;
+  border-radius: 20px; font-size: 13px; cursor: pointer;
+  font-family: 'Poppins', sans-serif; transition: all 0.2s;
+}
+.al-refresh:hover { background: #ff6b35; color: #fff; }
+
+.al-controls { margin-bottom: 20px; }
+.al-search {
+  width: 100%; background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 12px 16px; font-size: 14px; color: #fff;
+  outline: none; margin-bottom: 12px; font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+.al-search:focus { border-color: #ff6b35; }
+.al-filter-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.al-filter-btn {
+  background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);
+  color: #888; padding: 6px 14px; border-radius: 20px; font-size: 12px;
+  cursor: pointer; transition: all 0.2s; font-family: 'Poppins', sans-serif;
+}
+.al-filter-btn:hover { border-color: rgba(255,107,53,0.3); }
+.al-filter-btn.active { border-color: #ff6b35; color: #ff6b35; background: rgba(255,107,53,0.1); }
+
+.al-logs-list {
+  display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px;
+  max-height: 600px; overflow-y: auto;
+}
+.al-empty {
+  text-align: center; padding: 60px 20px; color: #666;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.al-log-row {
+  display: flex; gap: 12px; background: #1a1a1a;
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 12px;
+  padding: 14px; transition: all 0.2s;
+}
+.al-log-row:hover { border-color: rgba(255,107,53,0.2); }
+.al-log-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.al-log-content { flex: 1; min-width: 0; }
+.al-log-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.al-log-top strong { font-size: 13px; color: #fff; }
+.al-log-time { font-size: 11px; color: #666; white-space: nowrap; flex-shrink: 0; }
+.al-log-meta { display: flex; gap: 10px; margin-top: 4px; font-size: 11px; color: #888; }
+.al-log-role {
+  background: rgba(255,255,255,0.06); padding: 1px 8px; border-radius: 10px;
+  font-weight: 600; text-transform: capitalize;
+}
+.al-log-details {
+  margin-top: 6px; font-size: 11px; color: #aaa;
+  background: rgba(255,255,255,0.03); border-radius: 8px; padding: 6px 10px;
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.al-log-details b { color: #ccc; }
+
+.al-pagination {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.al-pagination button {
+  background: #1a1a1a; border: 1px solid rgba(255,255,255,0.1);
+  color: #fff; padding: 8px 18px; border-radius: 20px; font-size: 13px;
+  cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 0.2s;
+}

@@ -1,5 +1,7 @@
+cat > /mnt/user-data/outputs/AdminDashboard.js << 'EOF'
 import React, { useState, useEffect } from 'react';
 import './AdminDashboard.css';
+import ActivityLogs from './ActivityLogs';
 
 // ── SUPABASE CONFIG ──
 const SUPABASE_URL = 'https://rhrsebtzwqjvjdrtvuhl.supabase.co';
@@ -184,12 +186,13 @@ export default function AdminDashboard({ onLogout }) {
 
   // NAV ITEMS based on role
   const allNavItems = [
-    { id:'dashboard', icon:'📊', label:'Dashboard',    roles:['super_admin','branch_manager'] },
-    { id:'orders',    icon:'📦', label:'Orders',       roles:['super_admin','branch_manager','kitchen','rider'] },
-    { id:'menu',      icon:'🍕', label:'Menu',         roles:['super_admin','branch_manager'] },
-    { id:'stock',     icon:'📋', label:'Stock',        roles:['super_admin','branch_manager'] },
-    { id:'accounts',  icon:'👥', label:'Accounts',     roles:['super_admin'] },
-    { id:'reports',   icon:'📈', label:'Reports',      roles:['super_admin','branch_manager'] },
+    { id:'dashboard', icon:'📊', label:'Dashboard',      roles:['super_admin','branch_manager'] },
+    { id:'orders',    icon:'📦', label:'Orders',         roles:['super_admin','branch_manager','kitchen','rider'] },
+    { id:'menu',      icon:'🍕', label:'Menu',           roles:['super_admin','branch_manager'] },
+    { id:'stock',     icon:'📋', label:'Stock',          roles:['super_admin','branch_manager'] },
+    { id:'accounts',  icon:'👥', label:'Accounts',       roles:['super_admin'] },
+    { id:'reports',   icon:'📈', label:'Reports',        roles:['super_admin','branch_manager'] },
+    { id:'logs',      icon:'📜', label:'Activity Logs',  roles:['super_admin','branch_manager'] },
   ];
   const navItems = allNavItems.filter(n => n.roles.includes(role));
 
@@ -519,6 +522,9 @@ export default function AdminDashboard({ onLogout }) {
               </div>
             </div>
           )}
+
+          {/* ── ACTIVITY LOGS ── */}
+          {activeTab === 'logs' && <ActivityLogs />}
 
         </div>
       </main>
