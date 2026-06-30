@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/AppDownload.js << 'EOF'
 import React from 'react';
 import './AppDownload.css';
 

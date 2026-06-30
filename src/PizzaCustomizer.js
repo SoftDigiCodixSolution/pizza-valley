@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/PizzaCustomizer.js << 'EOF'
 import React, { useState } from 'react';
 import './PizzaCustomizer.css';
 
