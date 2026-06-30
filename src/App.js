@@ -1,4 +1,4 @@
-cat > /mnt/user-data/outputs/App.js << 'APPEOF'
+// Fixed: no hidden characters, UTF‑8 without BOM
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './Login';
